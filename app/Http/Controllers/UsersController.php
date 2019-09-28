@@ -59,13 +59,12 @@ class UsersController extends Controller
      */
     public function login(Request $request)
     {
-
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
             'remember_me' => 'boolean',
         ]);
-
+        
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             return response()->json([
@@ -82,6 +81,7 @@ class UsersController extends Controller
 
         $token->save();
         return response()->json([
+            'user' => $user,
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
